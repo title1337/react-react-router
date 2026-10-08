@@ -1,16 +1,23 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function HomePage() {
   const [products, setProducts] = useState([]);
   const [isError, setIsError] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
 
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    getProducts();
+  }, []);
+
   const getProducts = async () => {
     try {
       setIsError(false);
       setIsLoading(true);
-      const results = await axios("http://localhost:4001/products");
+      const results = await axios('http://localhost:4001/products');
       setProducts(results.data.data);
       setIsLoading(false);
     } catch (error) {
@@ -18,9 +25,12 @@ function HomePage() {
     }
   };
 
-  useEffect(() => {
-    getProducts();
-  }, []);
+  // const handleDelete = async (id) => {
+  //   try {
+  //     await axios.delete(`http://localhost:4001/products/${id}`);
+  //   }
+  // }
+
   return (
     <div>
       <div className="app-wrapper">
