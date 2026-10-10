@@ -23,7 +23,7 @@ function CreateProductForm() {
         image: imgInput,
         description: descrInput,
       };
-      await axios.post('ttp://localhost:4001/products', newProductData);
+      await axios.post('http://localhost:4001/products', newProductData);
       navigate('/');
     } catch (error) {
       alert(error);
@@ -31,7 +31,7 @@ function CreateProductForm() {
   };
 
   return (
-    <form className="product-form">
+    <form className="product-form" onSubmit={handleSubmit}>
       <h1>Create Product Form</h1>
       <div className="input-container">
         <label>
@@ -89,6 +89,7 @@ function CreateProductForm() {
             onChange={(e) => {
               setDescrInput(e.target.value);
             }}
+            value={descrInput}
             rows={4}
             cols={30}
           />

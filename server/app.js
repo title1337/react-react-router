@@ -1,42 +1,41 @@
-import express from "express";
-import bodyParser from "body-parser";
-import cors from "cors";
+import express from 'express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
 
 let products = [
   {
     id: 1,
-    name: "Fond - Neutral",
+    name: 'Fond - Neutral',
     price: 160,
-    image: "http://dummyimage.com/350x350.png/dddddd/000000",
-    description: "Morbi non quam nec dui luctus rutrum. Nulla tellus.",
+    image: 'http://dummyimage.com/350x350.png/dddddd/000000',
+    description: 'Morbi non quam nec dui luctus rutrum. Nulla tellus.',
   },
   {
     id: 2,
-    name: "Pepper - Cubanelle",
+    name: 'Pepper - Cubanelle',
     price: 7624,
-    image: "http://dummyimage.com/350x350.png/cc0000/ffffff",
-    description: "Nulla facilisi.",
+    image: 'http://dummyimage.com/350x350.png/cc0000/ffffff',
+    description: 'Nulla facilisi.',
   },
 ];
 
 const app = express();
 const port = 4001;
-let id = 3;
 
 app.use(cors());
 app.use(bodyParser.json());
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
+app.get('/', (req, res) => {
+  res.send('Hello World!');
 });
 
-app.get("/products", (req, res) => {
+app.get('/products', (req, res) => {
   res.json({
     data: products,
   });
 });
 
-app.get("/products/:id", (req, res) => {
+app.get('/products/:id', (req, res) => {
   const productId = +req.params.id;
   const hasFound = products.find((post) => post.id === productId);
 
@@ -53,19 +52,27 @@ app.get("/products/:id", (req, res) => {
   });
 });
 
-app.post("/products", (req, res) => {
+app.post('/products', (req, res) => {
+  let newProductId;
+  let latestProductId = products[products.length - 1]?.id;
+
+  if (latestProductId) {
+    newProductId = latestProductId + 1;
+  } else {
+    newProductId = 1;
+  }
+
   products.push({
-    id: id,
+    id: newProductId,
     ...req.body,
   });
-  id++;
-  console.log(products);
+
   return res.json({
-    message: "Product has been created.",
+    message: 'Product has been created.',
   });
 });
 
-app.put("/products/:id", (req, res) => {
+app.put('/products/:id', (req, res) => {
   const updatedProduct = req.body;
   const productId = +req.params.id;
 
@@ -91,7 +98,7 @@ app.put("/products/:id", (req, res) => {
   });
 });
 
-app.delete("/products/:id", (req, res) => {
+app.delete('/products/:id', (req, res) => {
   const productId = +req.params.id;
 
   const hasFound = products.find((product) => product.id === productId);
